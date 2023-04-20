@@ -8,7 +8,7 @@ namespace KevinV.WhackAMole.Objects
 
         public override int ScoreValue
         {
-            get { return scoreValue + bonusScore; }
+            get { return 0; }
         }
 
         public int ModifyScore(int currentScore)

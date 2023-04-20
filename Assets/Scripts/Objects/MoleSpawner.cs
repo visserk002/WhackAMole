@@ -12,7 +12,7 @@ namespace KevinV.WhackAMole.Objects
         private float spawnInterval = 1f;
         private float currentSpawnInterval;
 
-        private void Start()
+        private void Start() //TODO remove after game is running from UI
         {
             StartSpawning();
         }
@@ -23,9 +23,14 @@ namespace KevinV.WhackAMole.Objects
             InvokeRepeating(nameof(SpawnMole), currentSpawnInterval, currentSpawnInterval);
         }
 
+        public void StopSpawning()
+        {
+            CancelInvoke();
+        }
+
         private void SpawnMole()
         {
-            int moleType = Random.Range(0, 3);
+            int moleType = Random.Range(0, 3); //TODO hardcoded 3 verwijderen en uit lijst met types halen
             IMole mole;
 
             switch (moleType)
@@ -49,7 +54,7 @@ namespace KevinV.WhackAMole.Objects
 
         private Vector3 GetRandomMolePosition()
         {
-            return new Vector3(Random.Range(-3f, 3f), 0f, Random.Range(-2f, 2f));
+            return new Vector3(Random.Range(-3f, 3f), 0f, Random.Range(-2f, 2f)); //TODO replace for a good system
         }
 
         public void SetSpawnInterval(float interval)

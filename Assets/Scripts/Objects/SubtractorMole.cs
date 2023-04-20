@@ -8,18 +8,12 @@ namespace KevinV.WhackAMole.Objects
 
         public override int ScoreValue
         {
-            get { return scoreValue; }
+            get { return 0; }
         }
 
         public int ModifyScore(int currentScore)
         {
             return currentScore - subtractScore;
-        }
-
-        public override void Whack()
-        {
-            //GameManager.Instance.DisableScore(); //TODO activate when gamemanager is up and running
-            base.Whack();
         }
     }
 }

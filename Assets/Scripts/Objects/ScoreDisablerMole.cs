@@ -1,10 +1,11 @@
 using KevinV.WhackAMole.Interfaces;
+using KevinV.WhackAMole.Managers;
 
 namespace KevinV.WhackAMole.Objects
 {
     public class ScoreDisablerMole : NormalMole, IDisabler
     {
-        public float disableDuration = 3.0f; //TODO check if public or private is required
+        private float disableDuration = 3.0f;
 
         public float GetDisableDuration()
         {
@@ -13,7 +14,7 @@ namespace KevinV.WhackAMole.Objects
 
         public void DisableScore()
         {
-            //GameManager.Instance.DisableScore(disableDuration); //TODO activate when instance is there
+            GameManager.Instance.DisableScoring(disableDuration);
         }
 
         public override void Whack()

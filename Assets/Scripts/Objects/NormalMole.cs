@@ -26,7 +26,6 @@ namespace KevinV.WhackAMole.Objects
         public virtual void Whack()
         {
             Hide();
-            //update score
         }
     }
 }
