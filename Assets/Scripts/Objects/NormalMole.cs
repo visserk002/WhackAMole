@@ -5,7 +5,16 @@ namespace KevinV.WhackAMole.Objects
 {
     public class NormalMole : MonoBehaviour, IMole
     {
-        public int scoreValue;
+        [SerializeField] private MeshRenderer bodyMeshRenderer;
+
+        private int scoreValue = 1;
+        protected float heightOfModel;
+
+        public virtual void Start()
+        {
+            // Get the height of the bounds by getting the size along the y-axis
+            heightOfModel = bodyMeshRenderer.bounds.size.y;
+        }
 
         public virtual int ScoreValue
         {
