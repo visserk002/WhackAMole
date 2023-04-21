@@ -4,7 +4,7 @@ namespace KevinV.WhackAMole.Objects
 {
     public class SubtractorMole : NormalMole, IScoreModifier
     {
-        private int subtractScore = -3;
+        private int subtractScore = 3;
 
         public override int ScoreValue
         {
