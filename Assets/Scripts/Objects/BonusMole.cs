@@ -5,6 +5,7 @@ namespace KevinV.WhackAMole.Objects
     public class BonusMole : NormalMole, IScoreModifier
     {
         private int bonusScore = 5;
+        protected new MoleType moleType = MoleType.Bonus;
 
         public override int ScoreValue
         {

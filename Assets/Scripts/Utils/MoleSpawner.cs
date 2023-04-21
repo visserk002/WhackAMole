@@ -1,20 +1,18 @@
 using KevinV.WhackAMole.Interfaces;
 using UnityEngine;
 
-namespace KevinV.WhackAMole.Objects
+namespace KevinV.WhackAMole.Utils
 {
     public class MoleSpawner : MonoBehaviour
     {
-        public GameObject molePrefab;
-        public GameObject bonusMolePrefab;
-        public GameObject subtractorMolePrefab;
-
         private float spawnInterval = 1f;
         private float currentSpawnInterval;
+        private MolePool molePool;
 
-        private void Start() //TODO remove after game is running from UI
+        private void Start() 
         {
-            StartSpawning();
+            molePool = MolePool.Instance;
+            StartSpawning(); //TODO remove after game is running from UI
         }
 
         public void StartSpawning()
@@ -30,25 +28,7 @@ namespace KevinV.WhackAMole.Objects
 
         private void SpawnMole()
         {
-            int moleType = Random.Range(0, 3); //TODO hardcoded 3 verwijderen en uit lijst met types halen
-            IMole mole;
-
-            switch (moleType)
-            {
-                case 0:
-                    mole = Instantiate(molePrefab, transform).GetComponent<IMole>();
-                    break;
-                case 1:
-                    mole = Instantiate(bonusMolePrefab, transform).GetComponent<IMole>();
-                    break;
-                case 2:
-                    mole = Instantiate(subtractorMolePrefab, transform).GetComponent<IMole>();
-                    break;
-                default:
-                    mole = Instantiate(molePrefab, transform).GetComponent<IMole>();
-                    break;
-            }
-
+            IMole mole = molePool.GetMole();
             mole.Spawn(GetRandomMolePosition());
         }
 

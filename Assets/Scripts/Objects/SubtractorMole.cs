@@ -5,6 +5,7 @@ namespace KevinV.WhackAMole.Objects
     public class SubtractorMole : NormalMole, IScoreModifier
     {
         private int subtractScore = -3;
+        protected new MoleType moleType = MoleType.Subtractor;
 
         public override int ScoreValue
         {

@@ -12,6 +12,7 @@ namespace KevinV.WhackAMole.Objects
         [SerializeField] private MeshRenderer hatMeshRenderer;
 
         private float disableDuration = 2.0f;
+        protected new MoleType moleType = MoleType.Disabler;
 
         public override void Start()
         {

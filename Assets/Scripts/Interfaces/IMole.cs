@@ -8,5 +8,15 @@ namespace KevinV.WhackAMole.Interfaces
         void Spawn(Vector3 position);
         void Hide();
         void Whack();
+        bool IsActive();
+        MoleType GetMoleType();
+    }
+
+    public enum MoleType
+    {
+        Normal,
+        Bonus,
+        Subtractor,
+        Disabler,
     }
 }

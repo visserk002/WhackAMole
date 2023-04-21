@@ -13,6 +13,7 @@ namespace KevinV.WhackAMole.Objects
 
         private int scoreValue = 1;
         protected float heightOfModel;
+        protected MoleType moleType = MoleType.Normal;
 
         public virtual void Start()
         {
@@ -23,6 +24,16 @@ namespace KevinV.WhackAMole.Objects
         public virtual int ScoreValue
         {
             get { return scoreValue; }
+        }
+
+        public virtual bool IsActive()
+        {
+            return gameObject.activeSelf;
+        }
+
+        public virtual MoleType GetMoleType()
+        {
+            return moleType;
         }
 
         public virtual void Spawn(Vector3 position)
