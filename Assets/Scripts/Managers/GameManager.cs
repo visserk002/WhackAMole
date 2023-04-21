@@ -39,6 +39,11 @@ namespace KevinV.WhackAMole.Managers
         }
         #endregion
 
+        private void Start()
+        {
+            StartGame();
+        }
+
         private void Update()
         {
             GameTimer();

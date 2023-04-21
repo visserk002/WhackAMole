@@ -73,6 +73,7 @@ namespace KevinV.WhackAMole.Utils
         {
             IMole mole = Instantiate(prefab).GetComponent<IMole>();
             prefab.SetActive(false);
+            prefab.transform.position = Vector3.zero;
             return mole;
         }
 

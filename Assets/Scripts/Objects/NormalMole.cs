@@ -6,8 +6,8 @@ namespace KevinV.WhackAMole.Objects
 {
     public class NormalMole : MonoBehaviour, IMole
     {
-        private const float BODY_SCALE_DIVIDE_AMOUNT = 10f;
-        private const float DOMOVE_DURATION = 0.5f;
+        private const float BODY_SCALE_MULTIPLY_AMOUNT = 10f;
+        private const float DOMOVE_DURATION = 1f;
 
         [SerializeField] private MeshRenderer bodyMeshRenderer;
 
@@ -16,8 +16,8 @@ namespace KevinV.WhackAMole.Objects
 
         public virtual void Awake()
         {
-            // Get the height of the bounds by getting the size along the y-axis and dividing it by 10 because of the Z scale value 
-            heightOfModel = bodyMeshRenderer.bounds.size.y / BODY_SCALE_DIVIDE_AMOUNT;
+            // Get the height of the bounds by getting the size along the y-axis and multiplying it by 10 because of the Z scale value 
+            heightOfModel = bodyMeshRenderer.bounds.size.y * BODY_SCALE_MULTIPLY_AMOUNT;
         }
 
         public virtual int ScoreValue
@@ -35,15 +35,15 @@ namespace KevinV.WhackAMole.Objects
             return MoleType.Normal;
         }
 
-        public virtual void Spawn(Vector3 position)
+        public virtual void Spawn()
         {
-            transform.localPosition = new Vector3(position.x, position.y, heightOfModel);
-            transform.DOLocalMoveZ(0, DOMOVE_DURATION);
+            transform.localPosition = new Vector3(0, 0, -heightOfModel);
+            transform.DOLocalMoveZ(0, DOMOVE_DURATION).SetEase(Ease.InExpo);
         }
 
         public virtual void Hide()
         {
-            transform.DOLocalMoveZ(-heightOfModel, DOMOVE_DURATION);
+            transform.DOLocalMoveZ(-heightOfModel, DOMOVE_DURATION).SetEase(Ease.OutExpo);
         }
 
         public virtual void Whack()

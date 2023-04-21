@@ -1,4 +1,7 @@
+using System.Collections.Generic;
+using System.Linq;
 using KevinV.WhackAMole.Interfaces;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace KevinV.WhackAMole.Utils
@@ -7,14 +10,19 @@ namespace KevinV.WhackAMole.Utils
     {
         [SerializeField] private GameObject holeContainer;
 
-        private float spawnInterval = 1f;
+        private float spawnInterval = 5f;
         private float currentSpawnInterval;
         private MolePool molePool;
+        private List<Transform> holes = new List<Transform>();
 
         private void Start() 
         {
+            for (int i = 0; i < holeContainer.transform.childCount; i++)
+            {
+                holes.Add(holeContainer.transform.GetChild(i));
+            }
+
             molePool = MolePool.Instance;
-            StartSpawning(); //TODO remove after game is running from UI
         }
 
         public void StartSpawning()
@@ -30,18 +38,36 @@ namespace KevinV.WhackAMole.Utils
 
         private void SpawnMole()
         {
+
             IMole mole = molePool.GetMole();
 
-            if(mole != null)
-            {
-                mole.Spawn(GetRandomMolePosition());
-                ((MonoBehaviour)mole).gameObject.SetActive(true);
+            if(mole != null && holes.Any(hole => hole.transform.childCount == 0))
+            {   
+                GameObject goMole = ((MonoBehaviour)mole).gameObject;
+                goMole.SetActive(true);
+
+                // Set the mole's parent to the hole and preserve its local transform values
+                Quaternion localRot = goMole.transform.localRotation;
+                Vector3 localScale = goMole.transform.localScale;
+
+                goMole.transform.SetParent(LookForRandomUnoccupiedHole());
+
+                goMole.transform.localRotation = localRot;
+                goMole.transform.localScale = localScale;
+
+                mole.Spawn();
             }
         }
 
-        private Vector3 GetRandomMolePosition()
+        private Transform LookForRandomUnoccupiedHole()
         {
-            return new Vector3(Random.Range(-3f, 3f), 0f, Random.Range(-2f, 2f)); //TODO replace for a good system
+            Transform hole = null;
+
+            while (hole == null || hole.childCount > 0)
+            {
+                hole = holes[Random.Range(0, holes.Count)];
+            }
+            return hole;
         }
 
         public void SetSpawnInterval(float interval)
