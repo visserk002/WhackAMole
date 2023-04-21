@@ -1,5 +1,6 @@
 using KevinV.WhackAMole.Interfaces;
 using KevinV.WhackAMole.Objects;
+using KevinV.WhackAMole.Utils;
 using UnityEngine;
 
 namespace KevinV.WhackAMole.Managers
@@ -37,6 +38,11 @@ namespace KevinV.WhackAMole.Managers
             }
         }
         #endregion
+
+        private void Start()
+        {
+            StartGame();
+        }
 
         private void Update()
         {
