@@ -38,23 +38,14 @@ namespace KevinV.WhackAMole.Utils
 
         private void SpawnMole()
         {
-
             IMole mole = molePool.GetMole();
 
             if(mole != null && holes.Any(hole => hole.transform.childCount == 0))
             {   
                 GameObject goMole = ((MonoBehaviour)mole).gameObject;
+
                 goMole.SetActive(true);
-
-                // Set the mole's parent to the hole and preserve its local transform values
-                Quaternion localRot = goMole.transform.localRotation;
-                Vector3 localScale = goMole.transform.localScale;
-
                 goMole.transform.SetParent(LookForRandomUnoccupiedHole());
-
-                goMole.transform.localRotation = localRot;
-                goMole.transform.localScale = localScale;
-
                 mole.Spawn();
             }
         }
