@@ -13,9 +13,8 @@ namespace KevinV.WhackAMole.Objects
 
         private int scoreValue = 1;
         protected float heightOfModel;
-        protected MoleType moleType = MoleType.Normal;
 
-        public virtual void Start()
+        public virtual void Awake()
         {
             // Get the height of the bounds by getting the size along the y-axis and dividing it by 10 because of the Z scale value 
             heightOfModel = bodyMeshRenderer.bounds.size.y / BODY_SCALE_DIVIDE_AMOUNT;
@@ -33,7 +32,7 @@ namespace KevinV.WhackAMole.Objects
 
         public virtual MoleType GetMoleType()
         {
-            return moleType;
+            return MoleType.Normal;
         }
 
         public virtual void Spawn(Vector3 position)

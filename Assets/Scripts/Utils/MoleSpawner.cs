@@ -5,6 +5,8 @@ namespace KevinV.WhackAMole.Utils
 {
     public class MoleSpawner : MonoBehaviour
     {
+        [SerializeField] private GameObject holeContainer;
+
         private float spawnInterval = 1f;
         private float currentSpawnInterval;
         private MolePool molePool;
@@ -29,7 +31,12 @@ namespace KevinV.WhackAMole.Utils
         private void SpawnMole()
         {
             IMole mole = molePool.GetMole();
-            mole.Spawn(GetRandomMolePosition());
+
+            if(mole != null)
+            {
+                mole.Spawn(GetRandomMolePosition());
+                ((MonoBehaviour)mole).gameObject.SetActive(true);
+            }
         }
 
         private Vector3 GetRandomMolePosition()

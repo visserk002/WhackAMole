@@ -1,6 +1,5 @@
 using KevinV.WhackAMole.Interfaces;
 using KevinV.WhackAMole.Managers;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace KevinV.WhackAMole.Objects
@@ -12,14 +11,18 @@ namespace KevinV.WhackAMole.Objects
         [SerializeField] private MeshRenderer hatMeshRenderer;
 
         private float disableDuration = 2.0f;
-        protected new MoleType moleType = MoleType.Disabler;
 
-        public override void Start()
+        public override void Awake()
         {
-            base.Start();
+            base.Awake();
 
             // Because this mole wears a hat we need to add the value of that to the base value from NormaleMole.
             heightOfModel += (hatMeshRenderer.bounds.size.y / HAT_DIVIDE_AMOUNT);
+        }
+
+        public override MoleType GetMoleType()
+        {
+            return MoleType.Disabler;
         }
 
         public float GetDisableDuration()

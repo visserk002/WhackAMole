@@ -13,10 +13,10 @@ namespace KevinV.WhackAMole.Utils
 
         private List<IMole> pool;
 
-        private int normalMoleCount = 12;
-        private int bonusMoleCount = 2;
-        private int subtractorMoleCount = 4;
-        private int disablerMoleCount = 2;
+        private float normalMoleCount = 12;
+        private float bonusMoleCount = 2;
+        private float subtractorMoleCount = 4;
+        private float disablerMoleCount = 2;
 
         #region Singleton Implementation
         private static MolePool instance;
@@ -71,7 +71,8 @@ namespace KevinV.WhackAMole.Utils
 
         private IMole InstantiateMole(GameObject prefab)
         {
-            IMole mole = Instantiate(prefab, transform).GetComponent<IMole>();
+            IMole mole = Instantiate(prefab).GetComponent<IMole>();
+            prefab.SetActive(false);
             return mole;
         }
 
@@ -111,7 +112,9 @@ namespace KevinV.WhackAMole.Utils
 
         private IMole GetMoleFromPool(GameObject prefab)
         {
-            return pool.Find(x => !x.IsActive() && x.GetMoleType() == prefab.GetComponent<IMole>().GetMoleType());
+            IMole mole;
+            mole = pool.Find(x => !x.IsActive() && x.GetMoleType() == prefab.GetComponent<IMole>().GetMoleType());
+            return mole;
         }
     }
 }

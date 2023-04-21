@@ -123,6 +123,54 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &313055742
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 313055744}
+  - component: {fileID: 313055743}
+  m_Layer: 0
+  m_Name: MolePool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &313055743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 313055742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f1612e57997d4d4a9b79cbb26f82c45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  molePrefab: {fileID: 7460866054616627258, guid: 489761927ea0c4aa8bc24ec887c78592, type: 3}
+  bonusMolePrefab: {fileID: 7508152394879565203, guid: 1840385636a9c4fc7b1ea049960b48b2, type: 3}
+  subtractorMolePrefab: {fileID: 7023721072340586264, guid: 08defc51534f8466d8e09c06c581b572, type: 3}
+  disablerMolePrefab: {fileID: 2157782730020119837, guid: 090ae6e27787642c7afd852e96224f1b, type: 3}
+--- !u!4 &313055744
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 313055742}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &375698806
 GameObject:
   m_ObjectHideFlags: 0
