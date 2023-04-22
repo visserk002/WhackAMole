@@ -4,7 +4,7 @@ namespace KevinV.WhackAMole.Objects
 {
     public class BonusMole : NormalMole, IScoreModifier
     {
-        private int bonusScore = 5;
+        private int bonusMultiplier = 2;
 
         public override int ScoreValue
         {
@@ -18,7 +18,7 @@ namespace KevinV.WhackAMole.Objects
 
         public int ModifyScore(int currentScore)
         {
-            return currentScore + bonusScore;
+            return currentScore * bonusMultiplier <= 0 ? 0 : currentScore * bonusMultiplier;
         }
     }
 }

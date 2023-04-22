@@ -8,6 +8,7 @@ namespace KevinV.WhackAMole.Managers
     public class GameManager : MonoBehaviour
     {
         private const float SPAWN_INTERVAL_TIME = 10f;
+        private const float SPAWN_INTERVAL_MULTIPLIER = 0.8f;
 
         [SerializeField] private float gameDuration = 60f;
         [SerializeField] private MoleSpawner moleSpawner;
@@ -36,6 +37,8 @@ namespace KevinV.WhackAMole.Managers
             {
                 instance = this;
             }
+
+            NormalMole.OnMoleNotWhacked += MoleNotWhacked;
         }
         #endregion
 
@@ -64,7 +67,7 @@ namespace KevinV.WhackAMole.Managers
                 // Update spawn interval every 5 seconds
                 if (timer >= SPAWN_INTERVAL_TIME * spawnIntervalUpdateCount)
                 {
-                    moleSpawner.SetSpawnInterval(moleSpawner.GetCurrentSpawnInterval() / 2f); //TODO test if this doesn't go to fast at the end
+                    moleSpawner.SetSpawnInterval(moleSpawner.GetCurrentSpawnInterval() * SPAWN_INTERVAL_MULTIPLIER);
                     spawnIntervalUpdateCount++;
                 }
 
@@ -73,6 +76,11 @@ namespace KevinV.WhackAMole.Managers
                     EndGame();
                 }
             }
+        }
+
+        private void MoleNotWhacked(int scoreModifier)
+        {
+            UpdateScore(scoreModifier);
         }
 
         public void StartGame()
@@ -106,14 +114,22 @@ namespace KevinV.WhackAMole.Managers
 
         public void WhackMole(IMole mole)
         {
-            mole.Whack();
-
-            //update the score
-            if(canScorePoints)
+            if(!mole.whacked)
             {
-                score += mole.ScoreValue;
+                UpdateScore(mole.ScoreValue, mole);
 
-                if (mole is IScoreModifier scoreModifier)
+                mole.Whack();
+            }
+        }
+
+        private void UpdateScore(int value, IMole mole = null)
+        {
+            //update the score
+            if (canScorePoints)
+            {
+                score += value;
+
+                if (mole != null && mole is IScoreModifier scoreModifier)
                 {
                     score = scoreModifier.ModifyScore(score);
                 }
@@ -121,7 +137,11 @@ namespace KevinV.WhackAMole.Managers
                 Debug.Log("Score: " + score);
                 //TODO update score UI => UIController task.
             }
+        }
 
+        private void OnDestroy()
+        {
+            NormalMole.OnMoleNotWhacked -= MoleNotWhacked;
         }
     }
 }

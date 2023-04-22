@@ -20,6 +20,16 @@ namespace KevinV.WhackAMole.Objects
             heightOfModel += (hatMeshRenderer.bounds.size.y * HAT_MULTIPLY_AMOUNT);
         }
 
+        public override int ScoreValue
+        {
+            get { return 0; }
+        }
+
+        public override int NotWhackedValue
+        {
+            get { return 0; }
+        }
+
         public override MoleType GetMoleType()
         {
             return MoleType.Disabler;

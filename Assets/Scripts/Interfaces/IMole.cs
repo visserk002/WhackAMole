@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace KevinV.WhackAMole.Interfaces
@@ -5,6 +6,8 @@ namespace KevinV.WhackAMole.Interfaces
     public interface IMole
     {
         int ScoreValue { get; }
+        int NotWhackedValue { get; }
+        bool whacked { get; }
         void Spawn();
         void Hide();
         void Whack();
