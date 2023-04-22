@@ -1560,6 +1560,7 @@ GameObject:
   - component: {fileID: 2267878429564936899}
   - component: {fileID: 8946486783434667049}
   - component: {fileID: 4428114164889607778}
+  - component: {fileID: 8946486783434667050}
   m_Layer: 0
   m_Name: Soil
   m_TagString: Untagged
@@ -1824,6 +1825,20 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7574039630571385716}
+  m_Mesh: {fileID: 4122249715086859266, guid: 3bd29b955df5544fb9952d6e33d569c0, type: 3}
+--- !u!64 &8946486783434667050
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7574039630571385716}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4122249715086859266, guid: 3bd29b955df5544fb9952d6e33d569c0, type: 3}
 --- !u!4 &9153384581953250719
 Transform:

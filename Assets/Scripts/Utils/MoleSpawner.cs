@@ -10,7 +10,7 @@ namespace KevinV.WhackAMole.Utils
     {
         [SerializeField] private GameObject holeContainer;
 
-        private float spawnInterval = 5f;
+        private float spawnInterval = 3f;
         private float currentSpawnInterval;
         private MolePool molePool;
         private List<Transform> holes = new List<Transform>();
@@ -27,6 +27,7 @@ namespace KevinV.WhackAMole.Utils
 
         public void StartSpawning()
         {
+            SpawnMole(); //Trigger first spawnmole to instantly start the game and use invokerepeating to handle the recuring spawning
             currentSpawnInterval = spawnInterval;
             InvokeRepeating(nameof(SpawnMole), currentSpawnInterval, currentSpawnInterval);
         }
@@ -38,23 +39,14 @@ namespace KevinV.WhackAMole.Utils
 
         private void SpawnMole()
         {
-
             IMole mole = molePool.GetMole();
 
             if(mole != null && holes.Any(hole => hole.transform.childCount == 0))
             {   
                 GameObject goMole = ((MonoBehaviour)mole).gameObject;
+
                 goMole.SetActive(true);
-
-                // Set the mole's parent to the hole and preserve its local transform values
-                Quaternion localRot = goMole.transform.localRotation;
-                Vector3 localScale = goMole.transform.localScale;
-
                 goMole.transform.SetParent(LookForRandomUnoccupiedHole());
-
-                goMole.transform.localRotation = localRot;
-                goMole.transform.localScale = localScale;
-
                 mole.Spawn();
             }
         }
