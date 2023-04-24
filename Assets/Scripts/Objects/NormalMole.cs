@@ -15,7 +15,7 @@ namespace KevinV.WhackAMole.Objects
 
         private int scoreValue = 1;
         private int notWhackedValue = -1;
-        protected float timeOfMoleVisible = 1f;
+        protected float timeOfMoleVisible = .8f;
         protected float heightOfModel;
         protected Quaternion localRotation;
         protected Vector3 localScale;
@@ -53,6 +53,7 @@ namespace KevinV.WhackAMole.Objects
             return MoleType.Normal;
         }
 
+        //This method sets the transform of the mole to the values of the prefab because it has a new parent and we dont want the values to change.
         public virtual void Spawn()
         {
             whacked = false;
@@ -65,6 +66,7 @@ namespace KevinV.WhackAMole.Objects
             StartCoroutine(MoleLifespanCoroutine());
         }
 
+        //Handle that the mole needs to disappear after a certain time and call the NotWhacked method which handles any logic that the mole must do 
         private IEnumerator MoleLifespanCoroutine()
         {
             yield return new WaitForSeconds(timeOfMoleVisible + DOMOVE_DURATION);
@@ -75,6 +77,7 @@ namespace KevinV.WhackAMole.Objects
             }
         }
 
+        //Call the event so the GameManager gets updated that a mole wasn't whacked
         public virtual void NotWhacked()
         {
             Hide();
@@ -83,6 +86,7 @@ namespace KevinV.WhackAMole.Objects
 
         public virtual void Hide()
         {
+            //Use DoTween to move the mole down based on the height of the mole by using an ease. When its complete it calls the HiddenBehaviour method to further handle it.
             transform.DOLocalMoveZ(-heightOfModel, DOMOVE_DURATION).SetEase(Ease.OutExpo).OnComplete(HiddenBehaviour);
         }
 
@@ -92,6 +96,7 @@ namespace KevinV.WhackAMole.Objects
             gameObject.transform.SetParent(null);
         }
 
+        //This method gets called by the gamemanager when an user has whacked a mole.
         public virtual void Whack()
         {
             whacked = true;

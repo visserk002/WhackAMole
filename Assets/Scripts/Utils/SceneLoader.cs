@@ -69,6 +69,7 @@ namespace KevinV.WhackAMole.Utils
         }
     }
 
+    //Dont forget to update this if more scenes get added so it can be used in the LoadScene methods
     public enum Scene
     {
         Main,

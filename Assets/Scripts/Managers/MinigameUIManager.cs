@@ -66,8 +66,7 @@ namespace KevinV.WhackAMole.Managers
 
         public void SaveScore()
         {
-            //TODO call saving solution.
-            Debug.Log("name: " + inputUsername.text + " and score: " + score);
+            HighscoreManagementSystem.SaveData(score, inputUsername.text);
 
             BackToMainMenu();
         }

@@ -10,7 +10,7 @@ namespace KevinV.WhackAMole.Objects
 
         [SerializeField] private MeshRenderer hatMeshRenderer;
 
-        private float disableDuration = 2.0f;
+        private float disableDuration = 5.0f;
 
         public override void Awake()
         {
