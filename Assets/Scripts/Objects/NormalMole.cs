@@ -69,7 +69,7 @@ namespace KevinV.WhackAMole.Objects
         {
             yield return new WaitForSeconds(timeOfMoleVisible + DOMOVE_DURATION);
 
-            if (IsActive())
+            if (IsActive() && !whacked)
             {
                 NotWhacked();
             }
@@ -96,7 +96,7 @@ namespace KevinV.WhackAMole.Objects
         {
             whacked = true;
             StopCoroutine(MoleLifespanCoroutine());
-            Hide();
+            Hide();     
         }
     }
 }

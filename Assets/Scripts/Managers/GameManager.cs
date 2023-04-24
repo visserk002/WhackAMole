@@ -1,3 +1,4 @@
+using System;
 using KevinV.WhackAMole.Interfaces;
 using KevinV.WhackAMole.Objects;
 using KevinV.WhackAMole.Utils;
@@ -12,6 +13,7 @@ namespace KevinV.WhackAMole.Managers
 
         [SerializeField] private float gameDuration = 60f;
         [SerializeField] private MoleSpawner moleSpawner;
+        [SerializeField] private MinigameUIManager minigameUIManager;
 
         private int score;
         private float timer;
@@ -42,11 +44,6 @@ namespace KevinV.WhackAMole.Managers
         }
         #endregion
 
-        private void Start()
-        {
-            StartGame();
-        }
-
         private void Update()
         {
             GameTimer();
@@ -56,10 +53,12 @@ namespace KevinV.WhackAMole.Managers
         {
             if (gameIsRunning)
             {
-                // Update game timer
+                // Update game timer & send the remaining time to MinigameUIManager
                 timer += Time.deltaTime;
+                float timeRemaining = gameDuration - timer;
+                minigameUIManager.Timer = timeRemaining;
 
-                if(!canScorePoints && timer >= scoreDisabledTime)
+                if (!canScorePoints && timer >= scoreDisabledTime)
                 {
                     EnableScoring();
                 }
@@ -91,13 +90,13 @@ namespace KevinV.WhackAMole.Managers
             moleSpawner.StartSpawning();
         }
 
-        public void EndGame()
+        private void EndGame()
         {
             gameIsRunning = false;
             canScorePoints = false;
             moleSpawner.StopSpawning();
 
-            //TODO Call UIController to show endscreen
+            minigameUIManager.ShowEndGamePanel();
         }
 
         public void DisableScoring(float duration)
@@ -112,30 +111,32 @@ namespace KevinV.WhackAMole.Managers
             scoreDisabledTime = 0;
         }
 
+        //regulate th whackmole logic through the gamemanager so we only have one place where the input goes to and let this class handle it
         public void WhackMole(IMole mole)
         {
             if(!mole.whacked)
             {
-                UpdateScore(mole.ScoreValue, mole);
-
                 mole.Whack();
+
+                UpdateScore(mole.ScoreValue, mole);
             }
         }
 
         private void UpdateScore(int value, IMole mole = null)
         {
-            //update the score
+            //update the score if possible
             if (canScorePoints)
             {
                 score += value;
 
+                //check if the mole that was whacked has the interface IScoreModifier to adjust score based on the logic of that mole
                 if (mole != null && mole is IScoreModifier scoreModifier)
                 {
                     score = scoreModifier.ModifyScore(score);
                 }
 
-                Debug.Log("Score: " + score);
-                //TODO update score UI => UIController task.
+                //send score to minigameUIManager so it can show it in th UI in-game
+                minigameUIManager.Score = score;
             }
         }
 
