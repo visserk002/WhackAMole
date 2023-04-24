@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using KevinV.WhackAMole.Utils;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,7 +12,7 @@ namespace KevinV.WhackAMole.Managers
 
         public void StartWhackAMoleGame()
         {
-            //SceneLoader.LoadSceneAsync(WhackAMole);
+            SceneLoader.Instance.LoadSceneAsync(Utils.Scene.WhackAMole);
         }
 
         public void ShowHighscores()

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using KevinV.WhackAMole.Utils;
 using TMPro;
 using UnityEngine;
 
@@ -60,7 +61,7 @@ namespace KevinV.WhackAMole.Managers
 
         public void BackToMainMenu()
         {
-            //TODO call sceneManager to go back to main  menu
+            SceneLoader.Instance.LoadSceneAsync(Utils.Scene.Main);
         }
 
         public void SaveScore()
