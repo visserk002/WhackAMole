@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using KevinV.WhackAMole.Interfaces;
+using KevinV.WhackAMole.Managers;
 using Unity.VisualScripting;
 using UnityEngine;
 
 namespace KevinV.WhackAMole.Utils
 {
-    public class MoleSpawner : MonoBehaviour
+    public class MoleSpawner : MonoBehaviour, IStartGameObserver, IEndGameObserver
     {
         [SerializeField] private GameObject holeContainer;
 
@@ -23,16 +24,19 @@ namespace KevinV.WhackAMole.Utils
             }
 
             molePool = MolePool.Instance;
+
+            GameManager.Instance?.RegisterObserver(this);
+
         }
 
-        public void StartSpawning()
+        private void StartSpawning()
         {
             SpawnMole(); //Trigger first spawnmole to instantly start the game and use invokerepeating to handle the recuring spawning
             currentSpawnInterval = spawnInterval;
             InvokeRepeating(nameof(SpawnMole), currentSpawnInterval, currentSpawnInterval);
         }
 
-        public void StopSpawning()
+        private void StopSpawning()
         {
             CancelInvoke();
         }
@@ -72,6 +76,23 @@ namespace KevinV.WhackAMole.Utils
         public float GetCurrentSpawnInterval()
         {
             return currentSpawnInterval;
+        }
+
+        public void OnStartGame()
+        {
+            StartSpawning();
+        }
+
+        public void OnEndGame()
+        {
+            StopSpawning();
+        }
+
+        public void OnNotify() { }
+
+        private void OnDestroy()
+        {
+            GameManager.Instance?.UnregisterObserver(this);
         }
     }
 }

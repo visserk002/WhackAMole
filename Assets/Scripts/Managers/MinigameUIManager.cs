@@ -1,23 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using KevinV.WhackAMole.Interfaces;
 using KevinV.WhackAMole.Utils;
 using TMPro;
 using UnityEngine;
 
 namespace KevinV.WhackAMole.Managers
 {
-    public class MinigameUIManager : MonoBehaviour
+    public class MinigameUIManager : MonoBehaviour, IScoreObserver
     {
         private const string TIMER_TEXT = "Time left: ";
         private const string SCORE_TEXT = "Score: ";
-        private const string END_GAME_PANEL_SCORE_TEXT = "Your score: \n";
 
         [SerializeField] private TMP_Text timerText;
         [SerializeField] private TMP_Text scoreTextInGame;
-        [SerializeField] private GameObject endGamePanel;
         [SerializeField] private GameObject startGamePanel;
-        [SerializeField] private TMP_InputField inputUsername;
-        [SerializeField] private TMP_Text scoreTextEndGamePanel;
 
         private int score;
 
@@ -42,10 +39,14 @@ namespace KevinV.WhackAMole.Managers
             }
         }
 
+        private void Start()
+        {
+            GameManager.Instance.RegisterObserver(this);
+        }
+
         private void OnEnable()
         {
             startGamePanel.SetActive(true);
-            endGamePanel.SetActive(false);
         }
 
         public void StartGame()
@@ -53,22 +54,16 @@ namespace KevinV.WhackAMole.Managers
             GameManager.Instance.StartGame();
         }
 
-        public void ShowEndGamePanel()
+        public void OnScoreUpdated(int score)
         {
-            endGamePanel.SetActive(true);
-            scoreTextEndGamePanel.text = END_GAME_PANEL_SCORE_TEXT + score;
+            Score = score;
         }
 
-        public void BackToMainMenu()
-        {
-            SceneLoader.Instance.LoadSceneAsync(Utils.Scene.Main);
-        }
+        public void OnNotify() { }
 
-        public void SaveScore()
+        private void OnDestroy()
         {
-            HighscoreManagementSystem.SaveData(score, inputUsername.text);
-
-            BackToMainMenu();
+            GameManager.Instance?.UnregisterObserver(this);
         }
     }
 }

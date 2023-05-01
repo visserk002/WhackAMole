@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using KevinV.WhackAMole.Interfaces;
 using KevinV.WhackAMole.Objects;
 using KevinV.WhackAMole.Utils;
@@ -21,6 +22,8 @@ namespace KevinV.WhackAMole.Managers
         private float spawnIntervalUpdateCount;
         private bool gameIsRunning;
         private bool canScorePoints = true;
+
+        private List<IObserver> observers = new List<IObserver>();
 
         #region Singleton Implementation
         private static GameManager instance;
@@ -77,26 +80,37 @@ namespace KevinV.WhackAMole.Managers
             }
         }
 
-        private void MoleNotWhacked(int scoreModifier)
-        {
-            UpdateScore(scoreModifier);
-        }
-
         public void StartGame()
         {
             gameIsRunning = true;
             canScorePoints = true;
             spawnIntervalUpdateCount = 0;
-            moleSpawner.StartSpawning();
+
+            NotifyStartGameObservers();
         }
 
         private void EndGame()
         {
             gameIsRunning = false;
             canScorePoints = false;
-            moleSpawner.StopSpawning();
 
-            minigameUIManager.ShowEndGamePanel();
+            NotifyEndGameObservers();
+        }
+
+        //regulate th whackmole logic through the gamemanager so we only have one place where the input goes to and let this class handle it
+        public void WhackMole(IMole mole)
+        {
+            if (!mole.whacked)
+            {
+                mole.Whack();
+
+                UpdateScore(mole.ScoreValue, mole);
+            }
+        }
+
+        private void MoleNotWhacked(int scoreModifier)
+        {
+            UpdateScore(scoreModifier);
         }
 
         public void DisableScoring(float duration)
@@ -109,17 +123,6 @@ namespace KevinV.WhackAMole.Managers
         {
             canScorePoints = true;
             scoreDisabledTime = 0;
-        }
-
-        //regulate th whackmole logic through the gamemanager so we only have one place where the input goes to and let this class handle it
-        public void WhackMole(IMole mole)
-        {
-            if(!mole.whacked)
-            {
-                mole.Whack();
-
-                UpdateScore(mole.ScoreValue, mole);
-            }
         }
 
         private void UpdateScore(int value, IMole mole = null)
@@ -135,10 +138,54 @@ namespace KevinV.WhackAMole.Managers
                     score = scoreModifier.ModifyScore(score);
                 }
 
-                //send score to minigameUIManager so it can show it in th UI in-game
-                minigameUIManager.Score = score;
+                NotifyScoreObservers(score);
             }
         }
+
+        #region Observerpattern
+        public void RegisterObserver(IObserver observer)
+        {
+            observers.Add(observer);
+        }
+
+        public void UnregisterObserver(IObserver observer)
+        {
+            observers.Remove(observer);
+        }
+
+        private void NotifyScoreObservers(int newScore)
+        {
+            foreach (IObserver observer in observers)
+            {
+                if (observer is IScoreObserver scoreObserver)
+                {
+                    scoreObserver.OnScoreUpdated(newScore);
+                }
+            }
+        }
+
+        private void NotifyEndGameObservers()
+        {
+            foreach (IObserver observer in observers)
+            {
+                if (observer is IEndGameObserver endGameObserver)
+                {
+                    endGameObserver.OnEndGame();
+                }
+            }
+        }
+
+        private void NotifyStartGameObservers()
+        {
+            foreach (IObserver observer in observers)
+            {
+                if (observer is IStartGameObserver startGameObservers)
+                {
+                    startGameObservers.OnStartGame();
+                }
+            }
+        }
+        #endregion
 
         private void OnDestroy()
         {
