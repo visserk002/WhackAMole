@@ -25,7 +25,7 @@ namespace KevinV.WhackAMole.Utils
 
             molePool = MolePool.Instance;
 
-            GameManager.Instance?.RegisterObserver(this);
+            ObserverManager.Instance.RegisterObserver(this);
 
         }
 
@@ -92,7 +92,7 @@ namespace KevinV.WhackAMole.Utils
 
         private void OnDestroy()
         {
-            GameManager.Instance?.UnregisterObserver(this);
+            ObserverManager.Instance?.UnregisterObserver(this);
         }
     }
 }

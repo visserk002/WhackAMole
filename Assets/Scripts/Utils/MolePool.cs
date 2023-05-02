@@ -85,22 +85,22 @@ namespace KevinV.WhackAMole.Utils
             if (moleType < normalMoleCount/pool.Count)
             {
                 // normal mole
-                mole = GetMoleFromPool(molePrefab);
+                mole = GetMoleFromPool(MoleType.Normal);
             }
             else if (moleType < (normalMoleCount + bonusMoleCount) / pool.Count)
             {
                 // bonus mole
-                mole = GetMoleFromPool(bonusMolePrefab);
+                mole = GetMoleFromPool(MoleType.Bonus);
             }
             else if(moleType < (normalMoleCount + bonusMoleCount + subtractorMoleCount) / pool.Count)
             {
                 // subtractor mole
-                mole = GetMoleFromPool(subtractorMolePrefab);
+                mole = GetMoleFromPool(MoleType.Subtractor);
             }
             else
             {
                 //disabler mole
-                mole = GetMoleFromPool(disablerMolePrefab);
+                mole = GetMoleFromPool(MoleType.Disabler);
             }
 
             if (mole == null)
@@ -111,10 +111,10 @@ namespace KevinV.WhackAMole.Utils
             return mole;
         }
 
-        private IMole GetMoleFromPool(GameObject prefab)
+        private IMole GetMoleFromPool(MoleType moleType)
         {
             IMole mole;
-            mole = pool.Find(x => !x.IsActive() && x.GetMoleType() == prefab.GetComponent<IMole>().GetMoleType());
+            mole = pool.Find(x => !x.IsActive() && x.GetMoleType() == moleType);
             return mole;
         }
     }

@@ -20,7 +20,7 @@ namespace KevinV.WhackAMole.Behaviours
 
         private void Start()
         {
-            GameManager.Instance.RegisterObserver(this);
+            ObserverManager.Instance.RegisterObserver(this);
         }
 
         private void OnEnable()
@@ -66,7 +66,7 @@ namespace KevinV.WhackAMole.Behaviours
 
         private void OnDestroy()
         {
-            GameManager.Instance?.UnregisterObserver(this);
+            ObserverManager.Instance?.UnregisterObserver(this);
         } 
     }
 }

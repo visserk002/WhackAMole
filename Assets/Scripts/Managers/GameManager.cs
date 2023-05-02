@@ -86,7 +86,7 @@ namespace KevinV.WhackAMole.Managers
             canScorePoints = true;
             spawnIntervalUpdateCount = 0;
 
-            NotifyStartGameObservers();
+            ObserverManager.Instance.NotifyStartGameObservers();
         }
 
         private void EndGame()
@@ -94,7 +94,7 @@ namespace KevinV.WhackAMole.Managers
             gameIsRunning = false;
             canScorePoints = false;
 
-            NotifyEndGameObservers();
+            ObserverManager.Instance.NotifyEndGameObservers();
         }
 
         //regulate th whackmole logic through the gamemanager so we only have one place where the input goes to and let this class handle it
@@ -138,54 +138,9 @@ namespace KevinV.WhackAMole.Managers
                     score = scoreModifier.ModifyScore(score);
                 }
 
-                NotifyScoreObservers(score);
+                ObserverManager.Instance.NotifyScoreObservers(score);
             }
         }
-
-        #region Observerpattern
-        public void RegisterObserver(IObserver observer)
-        {
-            observers.Add(observer);
-        }
-
-        public void UnregisterObserver(IObserver observer)
-        {
-            observers.Remove(observer);
-        }
-
-        private void NotifyScoreObservers(int newScore)
-        {
-            foreach (IObserver observer in observers)
-            {
-                if (observer is IScoreObserver scoreObserver)
-                {
-                    scoreObserver.OnScoreUpdated(newScore);
-                }
-            }
-        }
-
-        private void NotifyEndGameObservers()
-        {
-            foreach (IObserver observer in observers)
-            {
-                if (observer is IEndGameObserver endGameObserver)
-                {
-                    endGameObserver.OnEndGame();
-                }
-            }
-        }
-
-        private void NotifyStartGameObservers()
-        {
-            foreach (IObserver observer in observers)
-            {
-                if (observer is IStartGameObserver startGameObservers)
-                {
-                    startGameObservers.OnStartGame();
-                }
-            }
-        }
-        #endregion
 
         private void OnDestroy()
         {
