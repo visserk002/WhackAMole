@@ -75,6 +75,17 @@ namespace KevinV.WhackAMole.Managers
                 }
             }
         }
+
+        public void NotifyMoleNotWhackedObservers(int scoreModifier)
+        {
+            foreach (IObserver observer in observers)
+            {
+                if (observer is IMoleNotWhackedObserver moleNotWhackedObservers)
+                {
+                    moleNotWhackedObservers.MoleNotWhacked(scoreModifier);
+                }
+            }
+        }
         #endregion
     }
 }

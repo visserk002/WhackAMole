@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace KevinV.WhackAMole.Managers
 {
-    public class GameManager : MonoBehaviour
+    public class GameManager : MonoBehaviour, IMoleNotWhackedObserver
     {
         private const float SPAWN_INTERVAL_TIME = 10f;
         private const float SPAWN_INTERVAL_MULTIPLIER = 0.8f;
@@ -22,8 +22,6 @@ namespace KevinV.WhackAMole.Managers
         private float spawnIntervalUpdateCount;
         private bool gameIsRunning;
         private bool canScorePoints = true;
-
-        private List<IObserver> observers = new List<IObserver>();
 
         #region Singleton Implementation
         private static GameManager instance;
@@ -43,7 +41,7 @@ namespace KevinV.WhackAMole.Managers
                 instance = this;
             }
 
-            NormalMole.OnMoleNotWhacked += MoleNotWhacked;
+            ObserverManager.Instance.RegisterObserver(this);
         }
         #endregion
 
@@ -108,7 +106,7 @@ namespace KevinV.WhackAMole.Managers
             }
         }
 
-        private void MoleNotWhacked(int scoreModifier)
+        public void MoleNotWhacked(int scoreModifier)
         {
             UpdateScore(scoreModifier);
         }
@@ -144,7 +142,9 @@ namespace KevinV.WhackAMole.Managers
 
         private void OnDestroy()
         {
-            NormalMole.OnMoleNotWhacked -= MoleNotWhacked;
+            ObserverManager.Instance?.UnregisterObserver(this);
         }
+
+        public void OnNotify() { }
     }
 }

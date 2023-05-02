@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using DG.Tweening;
 using KevinV.WhackAMole.Interfaces;
+using KevinV.WhackAMole.Managers;
 using UnityEngine;
 
 namespace KevinV.WhackAMole.Objects
@@ -21,8 +22,6 @@ namespace KevinV.WhackAMole.Objects
         protected Vector3 localScale;
 
         public bool whacked { get; private set; }
-
-        public static event Action<int> OnMoleNotWhacked; //because this only gets called to one object (GameManager) the Unity event system has better performance than C# event system. In other cases i would use C# delegates/events
 
         public virtual void Awake()
         {
@@ -81,7 +80,7 @@ namespace KevinV.WhackAMole.Objects
         public virtual void NotWhacked()
         {
             Hide();
-            OnMoleNotWhacked?.Invoke(NotWhackedValue);
+            ObserverManager.Instance.NotifyMoleNotWhackedObservers(NotWhackedValue);
         }
 
         public virtual void Hide()
